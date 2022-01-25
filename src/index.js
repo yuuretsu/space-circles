@@ -32,8 +32,9 @@ const a = fxrand() * PI_2;
  * @returns 
  */
 function circle(ctx, x, y, r, d) {
-  ctx.globalCompositeOperation =  randChoice(fxrand, ['xor']);
-  // ctx.globalCompositeOperation =  ['screen', 'xor', 'source-atop'][(d) % 3];
+  ctx.lineCap = 'round';
+  ctx.globalCompositeOperation =  randChoice(fxrand, ['source-over' ,'destination-out', 'xor']);
+  // ctx.globalCompositeOperation =  ['source-over' ,'destination-out'][(d) % 2];
   const S = Math.PI * r ** 2;
   if (r < 0.00005) return;
   ctx.beginPath();
@@ -58,12 +59,20 @@ function circle(ctx, x, y, r, d) {
   // ctx.strokeStyle = grad
   ctx.stroke();
 
+  const grad1 = ctx.createLinearGradient(...lineEnd(x, y, 0, r), ...lineEnd(x, y, 0, -r));
+  grad1.addColorStop(0, `hsla(${d * MULT + H}, 0%, 50%, 0)`);
+  grad1.addColorStop(1, `hsla(${d * MULT + H + 90}, 0%, 90%, 0.5)`);
+
+  ctx.strokeStyle = grad1;
+  // ctx.strokeStyle = grad
+  ctx.stroke();
+
 
   const points = [];
 
   for (let i = 0; i < S * 50000; i++) {
     const newR = randFloat(fxrand, r * 0.05, r * 0.5) ** 1.9 * 5;
-    const tor = Math.sqrt(fxrand()) * r;
+    const tor = Math.round(Math.sqrt(fxrand()) * r * 50) / 50;
     const toa = fxrand() * PI_2;
     const newPos = lineEnd(x, y, toa, tor);
     if (points.every(p => distance(...p.pos, ...newPos) > p.radius + newR + r * 0.01)) {
@@ -109,13 +118,13 @@ figCtx.strokeRect(bw2, bw2, 1 - bw2 * 2, 1 - bw2 * 2);
 const grad = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 0.5);
 grad.addColorStop(0, `hsl(${H}, 100%, 20%)`)
 grad.addColorStop(1, `hsl(${H + 180}, 100%, 20%)`);
-ctx.fillStyle = `hsl(${H}, ${0}%, ${60}%)`;
+ctx.fillStyle = `hsl(${H}, ${50}%, ${5}%)`;
 ctx.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 
 for (let i = 0; i < 10; i++) {
   ctx.filter = `saturate(0) brightness(1) blur(${i ** 2}px) opacity(0.1)`;
   const [x, y] = lineEnd(0, 0, a, i * 5);
-  ctx.drawImage(figuresCanvas, i * -x, i * -y);
+  ctx.drawImage(figuresCanvas, i * x, i * y);
 }
 ctx.filter = 'blur(100px) hue-rotate(0deg)';
 ctx.drawImage(figuresCanvas, 0, 0);
