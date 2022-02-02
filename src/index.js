@@ -9,7 +9,7 @@ const PI_2 = Math.PI * 2;
 const WIDTH = 1;
 const HEIGHT = 1;
 
-const SCALE = 3000;
+const SCALE = 5000;
 // const SCALE = 14000;
 
 const { canvas, ctx } = new Layer(WIDTH * SCALE, HEIGHT * SCALE);
@@ -199,7 +199,7 @@ for (let y = 0; y < HEIGHT * SCALE; y++) {
   for (let x = 0; x < WIDTH * SCALE; x++) {
     if (fxrand() > 0.5) continue;
     const pointer = (x + y * WIDTH * SCALE) * 4;
-    const d = fxrand() * 40 - 20;
+    const d = fxrand() * 30 - 15;
     for (let i = 0; i < 3; i++) {
       data.data[pointer + i] += d;
     }
@@ -207,3 +207,5 @@ for (let y = 0; y < HEIGHT * SCALE; y++) {
 }
 
 ctx.putImageData(data, 0, 0);
+
+fxpreview();

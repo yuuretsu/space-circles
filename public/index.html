@@ -8,11 +8,10 @@
   <script id="fxhash-snippet">
     //---- do not edit the following code (you can indent as you wish)
     let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
-    var fxhash = "oo" + Array(49).fill(0).map(_=>alphabet[(Math.random()*alphabet.length)|0]).join('')
-    // const fxhash = 'ooqiKq5EszfxAzUihCaoa9xfD6RTCvYFBBz9WWrL1bjhFR8yHMz';
-    let b58dec = str=>[...str].reduce((p,c)=>p*alphabet.length+alphabet.indexOf(c)|0, 0)
+    var fxhash = "oo" + Array(49).fill(0).map(_ => alphabet[(Math.random() * alphabet.length) | 0]).join('')
+    let b58dec = str => [...str].reduce((p, c) => p * alphabet.length + alphabet.indexOf(c) | 0, 0)
     let fxhashTrunc = fxhash.slice(2)
-    let regex = new RegExp(".{" + ((fxhashTrunc.length/4)|0) + "}", 'g')
+    let regex = new RegExp(".{" + ((fxhashTrunc.length / 4) | 0) + "}", 'g')
     let hashes = fxhashTrunc.match(regex).map(h => b58dec(h))
     let sfc32 = (a, b, c, d) => {
       return () => {
@@ -37,6 +36,7 @@
     body {
       margin: 0;
     }
+
     canvas {
       max-width: 100%;
       /* background-color: rgb(230 230 230); */
